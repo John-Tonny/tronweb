@@ -196,6 +196,18 @@ export default class Trx {
         }).catch(err => callback(err));
     }
 
+    getTransactionInfoByBlockNum(blockID, callback = false) {
+        if (!callback)
+            return this.injectPromise(this.getTransactionInfoByBlockNum, blockID);
+
+	this.tronWeb.solidityNode.request(`walletsolidity/gettransactioninfobyblocknum`, {
+            num: blockID 
+        }, 'post').then(({transaction}) => {
+            callback(null, transaction);
+        }).catch(err => callback(err));
+    }
+
+
     getTransactionsToAddress(address = this.tronWeb.defaultAddress.hex, limit = 30, offset = 0, callback = false) {
         if (utils.isFunction(offset)) {
             callback = offset;
